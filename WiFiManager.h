@@ -61,6 +61,7 @@ class WiFiManagerParameter {
     char       *_value;
     int         _length;
     const char *_customHTML;
+    
 
     void init(const char *id, const char *placeholder, const char *defaultValue, int length, const char *custom);
 
@@ -117,7 +118,9 @@ class WiFiManager
     void          setCustomHeadElement(const char* element);
     //if this is true, remove duplicated Access Points - defaut true
     void          setRemoveDuplicateAPs(boolean removeDuplicates);
-
+    //if this is true, use custom url instead of root
+    void          setUseCustomUrl(boolean useCustomUrl);
+    void          setCustomUrl(const char *customUrl)
   private:
     std::unique_ptr<DNSServer>        dnsServer;
     std::unique_ptr<ESP8266WebServer> server;
@@ -170,6 +173,9 @@ class WiFiManager
     boolean       captivePortal();
     boolean       configPortalHasTimeout();
 
+    //custom url
+    bool _useCustomURL=false;
+     char *_customURL="configWifi/";
     // DNS server
     const byte    DNS_PORT = 53;
 

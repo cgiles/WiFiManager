@@ -68,6 +68,7 @@ const char* WiFiManagerParameter::getCustomHTML() {
 
 
 WiFiManager::WiFiManager() {
+
     _max_params = WIFI_MANAGER_MAX_PARAMS;
     _params = (WiFiManagerParameter**)malloc(_max_params * sizeof(WiFiManagerParameter*));
 }
@@ -141,14 +142,14 @@ void WiFiManager::setupConfigPortal() {
   /* Setup the DNS server redirecting all the domains to the apIP */
   dnsServer->setErrorReplyCode(DNSReplyCode::NoError);
   dnsServer->start(DNS_PORT, "*", WiFi.softAPIP());
-
+  char baseUrl=(!_useCustomURL)?"/":_customURL;
   /* Setup web pages: root, wifi config pages, SO captive portal detectors and not found. */
-  server->on(String(F("/")), std::bind(&WiFiManager::handleRoot, this));
-  server->on(String(F("/wifi")), std::bind(&WiFiManager::handleWifi, this, true));
-  server->on(String(F("/0wifi")), std::bind(&WiFiManager::handleWifi, this, false));
-  server->on(String(F("/wifisave")), std::bind(&WiFiManager::handleWifiSave, this));
-  server->on(String(F("/i")), std::bind(&WiFiManager::handleInfo, this));
-  server->on(String(F("/r")), std::bind(&WiFiManager::handleReset, this));
+  server->on(String(F(baseUrl)), std::bind(&WiFiManager::handleRoot, this));
+  server->on(String(F(baseUrl+"wifi")), std::bind(&WiFiManager::handleWifi, this, true));
+  server->on(String(F(baseUrl+"0wifi")), std::bind(&WiFiManager::handleWifi, this, false));
+  server->on(String(F(baseUrl"wifisave")), std::bind(&WiFiManager::handleWifiSave, this));
+  server->on(String(F(baseUrl+"i")), std::bind(&WiFiManager::handleInfo, this));
+  server->on(String(F(baseUrl+"/r")), std::bind(&WiFiManager::handleReset, this));
   //server->on("/generate_204", std::bind(&WiFiManager::handle204, this));  //Android/Chrome OS captive portal check.
   server->on(String(F("/fwlink")), std::bind(&WiFiManager::handleRoot, this));  //Microsoft captive portal. Maybe not needed. Might be handled by notFound handler.
   server->onNotFound (std::bind(&WiFiManager::handleNotFound, this));
