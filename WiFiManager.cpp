@@ -142,7 +142,7 @@ void WiFiManager::setupConfigPortal() {
   /* Setup the DNS server redirecting all the domains to the apIP */
   dnsServer->setErrorReplyCode(DNSReplyCode::NoError);
   dnsServer->start(DNS_PORT, "*", WiFi.softAPIP());
-  char baseUrl=(!_useCustomURL)?"/":_customURL;
+  String baseUrl=(!_useCustomURL)?"/":_customURL;
   /* Setup web pages: root, wifi config pages, SO captive portal detectors and not found. */
   server->on(String(F(baseUrl)), std::bind(&WiFiManager::handleRoot, this));
   server->on(String(F(baseUrl+"wifi")), std::bind(&WiFiManager::handleWifi, this, true));

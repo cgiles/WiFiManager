@@ -120,6 +120,7 @@ class WiFiManager
     void          setRemoveDuplicateAPs(boolean removeDuplicates);
     //if this is true, use custom url instead of root
     void          setUseCustomUrl(boolean useCustomUrl);
+    // set the a customurl, by default :"configWifi/"
     void          setCustomUrl(const char *customUrl)
   private:
     std::unique_ptr<DNSServer>        dnsServer;
@@ -175,7 +176,7 @@ class WiFiManager
 
     //custom url
     bool _useCustomURL=false;
-     char *_customURL="configWifi/";
+     String _customURL="configWifi/";
     // DNS server
     const byte    DNS_PORT = 53;
 
